@@ -52,7 +52,7 @@ similarityScore a b = score filteredAFreq filteredBFreq
         filteredAFreq = filter (\(k, _) -> k `elem` commonKeys) aFreq
         filteredBFreq = filter (\(k, _) -> k `elem` commonKeys) bFreq
         
-        score ((a1,a2):as) ((b1,b2):bs) = (a1 * b2) + score as bs
+        score ((a1,_):as) ((_,b2):bs) = (a1 * b2) + score as bs
         score _ _                       = 0 
 
 
