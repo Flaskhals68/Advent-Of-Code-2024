@@ -21,11 +21,11 @@ parseFile path = do
 printDistance :: [Int] -> [Int] -> IO ()
 printDistance a b = do
     let distance = totalDistance a b
-    putStrLn $ "Total distance: " ++ (show distance)
+    putStrLn $ "Total distance: " ++ show distance
 
 
 totalDistance :: [Int] -> [Int] -> Int
-totalDistance a b = sum $ map (\(x,y) -> abs(x-y)) $ zip sa sb
+totalDistance a b = sum $ zipWith (\x y -> abs (x - y)) sa sb
     where 
         sa = sort a
         sb = sort b
@@ -36,7 +36,7 @@ totalDistance a b = sum $ map (\(x,y) -> abs(x-y)) $ zip sa sb
 printSimilarityScore :: [Int] -> [Int] -> IO ()
 printSimilarityScore a b = do
     let score = similarityScore a b
-    putStrLn $ "Similarity score: " ++ (show score)
+    putStrLn $ "Similarity score: " ++ show score
 
 
 similarityScore :: [Int] -> [Int] -> Int
@@ -45,14 +45,14 @@ similarityScore a b = score filteredAFreq filteredBFreq
         aFreq = freqMap a
         bFreq = freqMap b
         
-        freqMap xs = map (\ys -> (head ys, length ys)) . group . sort $ xs
+        freqMap = map (\ys -> (head ys, length ys)) . group . sort
         
         commonKeys = map fst aFreq `intersect` map fst bFreq
         
         filteredAFreq = filter (\(k, _) -> k `elem` commonKeys) aFreq
         filteredBFreq = filter (\(k, _) -> k `elem` commonKeys) bFreq
         
-        score ((a1,a2):as) ((b1,b2):bs) = (a1 * b2) + (score as bs)  
+        score ((a1,a2):as) ((b1,b2):bs) = (a1 * b2) + score as bs
         score _ _                       = 0 
 
 
